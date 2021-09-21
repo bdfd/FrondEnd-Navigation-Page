@@ -1,0 +1,14 @@
+.icon {
+  display: inline-block;
+  vertical-align: middle;
+  pointer-events: none;
+  background-color: #eee;
+}
+
+.circle {
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
