@@ -2,7 +2,7 @@ import { IConfig } from './src/types'
 
 const c: IConfig = {
   // [必填], 请填写您的仓库地址
-  gitRepoUrl: 'https://github.com/bdfd/nav',
+  gitRepoUrl: 'https://github.com/bdfd/front-end-nav-page',
 
   // 部署分支
   branch: 'main',
@@ -14,7 +14,7 @@ const c: IConfig = {
   showGithub: true,
 
   // 您的网站地址，有利于SEO
-  homeUrl: 'https://github.com/bdfd/nav',
+  homeUrl: 'https://github.com/bdfd/front-end-nav-page',
 
   // 网站标题
   title: 'BDFD 个人导航 - 精选实用导航网站',
@@ -23,10 +23,10 @@ const c: IConfig = {
   description: 'BDFD 个人导航',
 
   // 网站关键字
-  keywords: '导航,前端资源,社区站点,设计师,实用工具,学习资源,运营,网络安全,node.js',
+  keywords: '导航,前端资源,实用工具,学习资源,运营,网络安全',
 
   // 默认主题: Light | Sim | Side | App | Shortcut
-  theme: 'Light',
+  theme: 'Sim',
 
   // 网站底部内容, 版权信息、备案号, 可以是 HTML
   footerContent: `
