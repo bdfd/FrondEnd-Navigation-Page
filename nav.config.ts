@@ -23,7 +23,7 @@ const c: IConfig = {
   description: 'BDFD-个人导航',
 
   // 网站关键字
-  keywords: '导航,前端资源,实用工具,学习资源,运营,网络安全',
+  keywords: '导航,前端资源,实用工具,学习资源,运营,网络安全.',
 
   // 默认主题: Light | Sim | Side | App | Shortcut
   theme: 'Sim',
