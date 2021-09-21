@@ -17,7 +17,7 @@ const c: IConfig = {
   homeUrl: 'https://bdfd.github.io/2.4.1_Front-End-Nav-Page/',
 
   // 网站标题
-  title: 'BDFD 个人导航 - 精选实用导航网站',
+  title: 'BDFD 前端资源集合地',
 
   // 网站描述
   description: 'BDFD-个人导航',
