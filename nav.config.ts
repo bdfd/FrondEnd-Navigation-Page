@@ -2,7 +2,7 @@ import { IConfig } from './src/types'
 
 const c: IConfig = {
   // [必填], 请填写您的仓库地址
-  gitRepoUrl: 'https://github.com/bdfd/front-end-nav-page',
+  gitRepoUrl: 'https://github.com/bdfd/2.4.1_Front-End-Nav-Page',
 
   // 部署分支
   branch: 'main',
@@ -14,7 +14,7 @@ const c: IConfig = {
   showGithub: true,
 
   // 您的网站地址，有利于SEO
-  homeUrl: 'https://github.com/bdfd/front-end-nav-page',
+  homeUrl: 'https://github.com/bdfd/2.4.1_Front-End-Nav-Page',
 
   // 网站标题
   title: 'BDFD 个人导航 - 精选实用导航网站',
