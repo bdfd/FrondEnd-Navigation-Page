@@ -14,7 +14,7 @@ const c: IConfig = {
   showGithub: true,
 
   // 您的网站地址，有利于SEO
-  homeUrl: 'https://github.com/bdfd/2.4.1_Front-End-Nav-Page',
+  homeUrl: 'https://bdfd.github.io/2.4.1_Front-End-Nav-Page/',
 
   // 网站标题
   title: 'BDFD 个人导航 - 精选实用导航网站',
