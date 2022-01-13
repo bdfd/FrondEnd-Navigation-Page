@@ -2,13 +2,14 @@
 // See https://github.com/xjh22222228/nav
 
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core'
-import { getLogoUrl, getTextContent } from '../../utils'
+import { getLogoUrl, getTextContent } from 'src/utils'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { ITagProp, INavFourProp } from '../../types'
+import { ITagProp, INavFourProp } from 'src/types'
 import { NzMessageService } from 'ng-zorro-antd/message'
 import { NzNotificationService } from 'ng-zorro-antd/notification'
 import * as __tag from '../../../data/tag.json'
-import { createFile } from '../../services'
+import { createFile } from 'src/services'
+import { $t } from 'src/locale'
 
 const tagMap: ITagProp = (__tag as any).default
 const tagKeys = Object.keys(tagMap)
@@ -24,6 +25,7 @@ export class CreateWebComponent implements OnInit {
   @Output() onCancel = new EventEmitter()
   @Output() onOk = new EventEmitter()
 
+  $t = $t
   validateForm!: FormGroup;
   iconUrl = ''
   urlArr = []
@@ -146,11 +148,11 @@ export class CreateWebComponent implements OnInit {
         path
       }).then(() => {
         that.validateForm.get('icon')!.setValue(path)
-        that.message.success('上传成功')
+        that.message.success($t('_uploadSuccess'))
       }).catch(res => {
         that.notification.error(
-          `错误: ${res?.response?.status ?? 401}`,
-          '上传失败，请重试！'
+          `${$t('_error')}: ${res?.response?.status ?? 401}`,
+          $t('_uploadFail')
         )
       }).finally(() => {
         that.uploading = false
@@ -164,7 +166,7 @@ export class CreateWebComponent implements OnInit {
     const file = files[0]
 
     if (!file.type.startsWith('image')) {
-      return this.message.error('请不要上传非法图片')
+      return this.message.error($t('_notUpload'))
     }
     this.handleUploadImage(file)
   }

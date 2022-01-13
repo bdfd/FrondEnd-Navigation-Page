@@ -1,24 +1,20 @@
 // Copyright @ 2018-2021 xiejiahe. All rights reserved. MIT license.
 // See https://github.com/xjh22222228/nav
 
-import config from '../../../../nav.config'
 import { Component } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
-import { INavProps, INavThreeProp, ISearchEngineProps } from '../../../types'
+import { INavProps, INavThreeProp } from 'src/types'
 import {
   fuzzySearch,
   queryString,
   setWebsiteList,
   toggleCollapseAll,
   matchCurrentList
-} from '../../../utils'
-import { isLogin } from '../../../utils/user'
-import { websiteList } from '../../../store'
-import { LOGO_CDN } from '../../../constants'
-import * as s from '../../../../data/search.json'
+} from 'src/utils'
+import { isLogin } from 'src/utils/user'
+import { websiteList } from 'src/store'
 import { NzIconService } from 'ng-zorro-antd/icon'
-
-const searchEngineList: ISearchEngineProps[] = (s as any).default
+import { settings, searchEngineList } from 'src/store'
 
 @Component({
   selector: 'app-side',
@@ -26,27 +22,27 @@ const searchEngineList: ISearchEngineProps[] = (s as any).default
   styleUrls: ['./index.component.scss']
 })
 export default class SideComponent {
-  LOGO_CDN = LOGO_CDN
+  LOGO_CDN = settings.favicon
   websiteList: INavProps[] = websiteList
   currentList: INavThreeProp[] = []
   id: number = 0
   page: number = 0
-  title: string = config.title.trim().split(/\s/)[0]
+  title: string = settings.title.trim().split(/\s/)[0]
   openIndex = queryString().page
-  contentEl: HTMLElement
   searchEngineList = searchEngineList
-  marginTop: number = searchEngineList.length > 0 ? 157 : 50
-  isFirst = false
   isLogin = isLogin
+  sideThemeImages = settings.sideThemeImages
+  sideThemeHeight = settings.sideThemeHeight
+  sideThemeAutoplay = settings.sideThemeAutoplay
 
   constructor (
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private iconService: NzIconService
   ) {
-    if (config.iconfontUrl) {
+    if (settings.iconfontUrl) {
       this.iconService.fetchFromIconfont({
-        scriptUrl: config.iconfontUrl
+        scriptUrl: settings.iconfontUrl
       })
     }
   }
@@ -67,36 +63,6 @@ export default class SideComponent {
     })
   }
 
-  ngAfterContentInit() {
-    window.addEventListener('scroll', this.scroll)
-
-    if (!this.isFirst) {
-      setTimeout(() => {
-        const headerEl = document.querySelector('.search-header')
-        if (headerEl) {
-          this.isFirst = true
-          this.marginTop = headerEl.clientHeight + 25
-        }
-      }, 26)
-    }
-  }
-
-  ngOnDestroy() {
-    window.removeEventListener('scroll', this.scroll)
-  }
-
-  scroll() {
-    const y = window.scrollY
-    if (!this.contentEl) {
-      this.contentEl = document.getElementById('content')
-    }
-    if (y > 30) {
-      this.contentEl.classList.add('fixed')
-    } else {
-      this.contentEl.classList.remove('fixed')
-    }
-  }
-
   handleSidebarNav(page, id) {
     this.websiteList[page].id = id
     this.router.navigate([this.router.url.split('?')[0]], { 
@@ -105,7 +71,22 @@ export default class SideComponent {
         id,
       }
     })
-    window.scrollTo(0, 0)
+    this.handlePositionTop()
+  }
+
+  handlePositionTop() {
+    setTimeout(() => {
+      const el = document.querySelector('.search-header') as HTMLDivElement
+      console.log(el)
+      if (el) {
+        const h = el.offsetHeight;
+        window.scroll({
+          top: h,
+          left: 0,
+          behavior: 'smooth'
+        })
+      }
+    }, 10)
   }
 
   onCollapse = (item, index) => {
@@ -117,6 +98,7 @@ export default class SideComponent {
   onCollapseAll = (e: Event) => {
     e?.stopPropagation()
     toggleCollapseAll(this.websiteList)
+    this.handlePositionTop()
   }
 
   collapsed() {

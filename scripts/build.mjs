@@ -4,11 +4,14 @@
 import fs from 'fs'
 import config from '../nav.config.js'
 import path from 'path'
+import LOAD_MAP from './loading.js'
 
 const dbPath = path.join('.', 'data', 'db.json')
+const setPath = path.join('.', 'data', 'settings.json')
 const pkgPath = path.join('package.json')
 
 const pkg = JSON.parse(fs.readFileSync(pkgPath).toString())
+const settings = JSON.parse(fs.readFileSync(setPath).toString())
 
 function addZero(num) {
   return num < 10 ? '0' + num : num
@@ -20,13 +23,18 @@ now.setHours(now.getHours() + 8)
 const date = `${now.getFullYear()}年${addZero(now.getMonth() + 1)}月${addZero(now.getDate())}日 ${addZero(now.getHours())}:${addZero(now.getMinutes())}:${addZero(now.getSeconds())}`
 
 const {
-  gitRepoUrl,
-  homeUrl,
   description,
   title,
   keywords,
   baiduStatisticsUrl,
-  cnzzStatisticsUrl
+  cnzzStatisticsUrl,
+  loading,
+  favicon
+} = settings
+
+const {
+  gitRepoUrl,
+  homeUrl,
 } = config.default
 
 const s = gitRepoUrl.split('/')
@@ -35,9 +43,12 @@ const authorName = s[s.length - 2]
 const repoName = s[s.length - 1]
 
 const htmlTemplate = `
+  <!-- https://github.com/xjh22222228/nav -->
   <title>${title}</title>
   <meta name="description" content="${description}">
   <meta name="keywords" content="${keywords}">
+  <link rel="icon" href="${favicon}">
+  <link rel ="apple-touch-icon" href="${favicon}">
 `.trim()
 
 const cnzzScript = !cnzzStatisticsUrl ? '' : `<script src="${cnzzStatisticsUrl}"></script>`
@@ -90,19 +101,16 @@ async function buildSeo() {
 async function build() {
   const htmlPath = path.join('.', 'src', 'index.html')
   let t = fs.readFileSync(htmlPath).toString()
+  t = t.replace(/<title>.*<\/title>/i, '')
+  t = t.replace('<link rel="icon" href="assets/logo.png">', '')
   t = t.replace('<!-- nav.config -->', htmlTemplate)
 
   if (baiduStatisticsUrl) {
     t = t.replace('<!-- nav.script -->', scriptTemplate)
   }
 
-  t = t.replace('assets/logo.png', `https://raw.sevencdn.com/${authorName}/${repoName}/image/logo.png`)
-  t = t.replace('assets/logo.png', `https://raw.sevencdn.com/${authorName}/${repoName}/image/logo.png`)
-  t = t.replace('assets/logo.png', `https://raw.sevencdn.com/${authorName}/${repoName}/image/logo.png`)
-  t = t.replace('assets/logo.png', `https://raw.sevencdn.com/${authorName}/${repoName}/image/logo.png`)
-  t = t.replace('assets/logo.png', `https://raw.sevencdn.com/${authorName}/${repoName}/image/logo.png`)
-
   t = t.replace('<!-- nav.seo -->', seoTemplate)
+  t = t.replace('<!-- nav.loading -->', LOAD_MAP[getLoadKey()] || '')
 
   fs.writeFileSync(htmlPath, t, { encoding: 'utf-8' })
   fs.unlinkSync('./nav.config.js')
@@ -112,3 +120,10 @@ async function build() {
 buildSeo()
 .finally(() => build())
 .catch(console.error)
+
+function getLoadKey() {
+  const keys = Object.keys(LOAD_MAP)
+  const rand = Math.floor(Math.random() * keys.length)
+  const loadingKey = loading === 'random' ? keys[rand] : loading
+  return loadingKey
+}

@@ -3,16 +3,18 @@
 
 import { INavProps } from '../types'
 import { websiteList } from '../store'
+import { $t } from '../locale'
 
 function getCreatedAt(node?: Element): string {
+  const now = new Date().toISOString()
   if (!node) {
-    return new Date().toISOString()
+    return now
   }
 
   const addDate = node.getAttribute('add_date')
 
   if (!addDate) {
-    return new Date().toISOString()
+    return now
   }
 
   return new Date(Number(addDate) * 1000).toISOString()
@@ -96,10 +98,10 @@ export function parseBookmark(htmlStr: string) {
           jj++
           data[ii - 1].nav.push({
             createdAt: nowCratedAt,
-            title: '未分类',
+            title: $t('_uncategorized'),
             nav: [
               {
-                title: '未分类',
+                title: $t('_uncategorized'),
                 nav: allNoCateData
               }
             ]
@@ -129,7 +131,7 @@ export function parseBookmark(htmlStr: string) {
               kk++
               data[ii - 1].nav[jj - 1].nav.push({
                 createdAt: nowCratedAt,
-                title: '未分类',
+                title: $t('_uncategorized'),
                 nav: allNoCateData
               })
             }
@@ -181,15 +183,15 @@ export function parseBookmark(htmlStr: string) {
     const allNoCateData = findAllNoCate(roolDL)
     if (allNoCateData.length > 0) {
       data.push({
-        title: '未分类',
+        title: $t('_uncategorized'),
         createdAt: nowCratedAt,
         nav: [
           {
             createdAt: nowCratedAt,
-            title: '未分类',
+            title: $t('_uncategorized'),
             nav: [
               {
-                title: '未分类',
+                title: $t('_uncategorized'),
                 nav: allNoCateData
               }
             ]

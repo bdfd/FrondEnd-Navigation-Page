@@ -1,7 +1,7 @@
 <nz-layout class="layout">
   <nz-layout>
     <div class="logo dark-bg">
-      <img [src]="LOGO_CDN" alt="发现导航nav3.cn">
+      <img [src]="LOGO_CDN" />
       <span class="site-title">{{ title }}</span>
     </div>
     <nz-sider nzWidth="200px" nzTheme="light" class="sider dark-scrollbar">
@@ -51,13 +51,32 @@
     </nz-sider>
 
     <nz-layout class="inner-layout">
-      <nz-content class="content" id="content">
-        <div class="search-header dark-bg-deep dark-border-color">
-          <app-search-engine></app-search-engine>
-          <app-web-list></app-web-list>
+      <div class="search-header dark-bg-deep dark-border-color" [ngStyle]="{height: sideThemeHeight + 'px'}">
+        <div class="bg">
+          <nz-carousel
+            nzEffect="scrollx"
+            [nzAutoPlay]="sideThemeAutoplay"
+            [nzDots]="sideThemeImages.length > 1"
+            [nzEnableSwipe]="sideThemeImages.length > 1"
+            [nzAutoPlaySpeed]="5000"
+          >
+            <div
+              class="bg-item"
+              nz-carousel-content
+              *ngFor="let item of sideThemeImages"
+              [ngStyle]="{ 'background-image': 'url(' + item.src + ')' }"
+              (click)="handleJumpUrl(item)"
+            >
+            </div>
+          </nz-carousel>
         </div>
+        <app-search-engine></app-search-engine>
+      </div>
 
-        <div class="box" [style.marginTop]="marginTop + 'px'">
+      <nz-content class="content" id="content">
+        <app-web-list></app-web-list>
+
+        <div class="box">
           <div *ngIf="currentList.length > 0; else noData">
             <div *ngFor="let item of currentList; let i=index">
               <div class="nav-wrapper">
@@ -71,7 +90,7 @@
       
                 <div nz-row [nzGutter]="[16, 16]" [style.display]="item.collapsed ? 'none' : ''">
                   <div
-                    *ngFor="let el of item.nav"
+                    *ngFor="let el of item.nav; let i=j"
                     class="gutter-row"
                     [class.remove]="!isLogin && el.ownVisible"
                     nz-col
@@ -83,7 +102,7 @@
                     [nzXl]="6"
                     [nzXXl]="6"
                   >
-                    <app-card [dataSource]="el"></app-card>
+                    <app-card [dataSource]="el" [indexs]="[page, id, i, j]"></app-card>
                   </div>
                 </div>
               </div>
