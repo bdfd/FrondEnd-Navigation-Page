@@ -3,7 +3,7 @@
   "homeUrl": "https://https://bdfd.github.io/FrondEnd-Navigation-Page/#/side?q=&id=0&page=0",
   "language": "zh-CN",
   "loading": "loading1",
-  "showGithub": false,
+  "showGithub": true,
   "title": "BDFD导航",
   "description": "BDFD精选导航",
   "keywords": "导航,前端资源,社区站点,设计师,实用工具,学习资源,运营,网络安全,node.js",
